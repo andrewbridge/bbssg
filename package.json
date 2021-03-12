@@ -1,0 +1,13 @@
+{
+  "name": "bbssg",
+  "version": "1.0.0",
+  "description": "A barebones static site generator",
+  "main": "generate.ts",
+  "author": "Andrew Bridge <andrew@andrewhbridge.co.uk>",
+  "repository": "https://github.com/andrewbridge/bbssg",
+  "license": "MIT",
+  "scripts": {
+    "dev": "watchexec -i dist -c -- yarn build",
+    "build": "deno run --unstable --allow-read --allow-write generate.ts"
+  }
+}

@@ -1,0 +1,25 @@
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+nav ul li {
+    margin-right: 1em;
+    margin-bottom: .6em;
+}
+
+nav ul li a {
+    padding: 0 .5em .3em;
+}
+
+nav ul li a:hover, nav ul li a:focus, nav ul li a:active {
+    text-decoration: none;
+    border-bottom: .25em solid #dbdbdb;
+}
+
+nav ul li a.active {
+    border-bottom: .25em solid #0076d1;
+}
