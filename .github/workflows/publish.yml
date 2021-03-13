@@ -27,8 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+    - uses: actions/checkout@v2
     - name: Publish BBSSG site to GitHub pages
-      uses: actions/checkout@v2
       uses: andrewbridge/bbssg@v1.1.7
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
