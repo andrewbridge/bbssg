@@ -1,12 +1,11 @@
 import Denomander from "https://deno.land/x/denomander/mod.ts";
-import { join } from "https://deno.land/std@0.89.0/path/mod.ts";
-import { __dirname } from './metadata.ts';
+import files from './files.ts';
 import initialise from "./initialise.ts";
 import generate from "./generate.ts";
 
 const decoder = new TextDecoder("utf-8");
 
-const { name, version, description } = JSON.parse(decoder.decode(Deno.readFileSync(join(__dirname, "./package.json"))));
+const { name, version, description } = JSON.parse(files['./package.json']);
 
 const program = new Denomander({
     app_name: name,

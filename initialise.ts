@@ -1,20 +1,16 @@
-import { join } from "https://deno.land/std@0.89.0/path/mod.ts";
-import { ensureDir, ensureFile, walk } from "https://deno.land/std@0.89.0/fs/mod.ts";
-import { __dirname } from "./metadata.ts";
+import { ensureFile } from "https://deno.land/std@0.89.0/fs/mod.ts";
+import files from "./files.ts";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder("utf-8");
 
 type InitialiseOptions = { gitignore: boolean, packageJson: boolean};
 export default async ({ gitignore = false, packageJson = false }: InitialiseOptions) => {
-    for await (const item of walk(join(__dirname, './src'))) {
-        const modPath = item.path;
-        const relPath = modPath.replace(__dirname, '.');
-        if (item.isDirectory) {
-            await ensureDir(relPath);
-        } else if (item.isFile) {
-            await Deno.copyFile(modPath, relPath);
-        }
+    for (const path in files) {
+        if (!path.startsWith('./src')) continue;
+        await ensureFile(path);
+        const fileData = files[path as keyof typeof files];
+        await Deno.writeFile(path, encoder.encode(fileData));
     }
     if (gitignore === true) {
         const gitignorePath = './.gitignore';
