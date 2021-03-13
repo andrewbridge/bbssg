@@ -3,19 +3,20 @@ import { ensureDir, ensureFile, walk } from "https://deno.land/std@0.89.0/fs/mod
 import marked from 'https://cdn.skypack.dev/marked';
 import { DOMParser, Element } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
+const encoder = new TextEncoder();
+
 const inputRelDir = './src';
 const outputRelDir = './dist';
 const titleReplacementStr = '{%PAGE_TITLE%}';
 const contentReplacementStr = '{%PAGE_CONTENT%}';
 
-(async () => {
+export default async () => {
     await ensureDir(inputRelDir);
     await ensureDir(outputRelDir);
     const inputDir = await Deno.realPath(inputRelDir);
     const outputDir = await Deno.realPath(outputRelDir);
     const templatePath = join(inputDir, './template.html');
     const template = await Deno.readTextFile(templatePath);
-    const encoder = new TextEncoder();
     for await (const item of walk(inputDir)) {
         if (!item.isFile || item.path === templatePath) continue;
         const { path, name } = item;
@@ -56,4 +57,4 @@ const contentReplacementStr = '{%PAGE_CONTENT%}';
         await ensureFile(outputPath);
         await Deno.copyFile(path, outputPath);
     }
-})()
+};

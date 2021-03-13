@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "watchexec -i dist -c -- yarn build",
-    "build": "deno run --unstable --allow-read --allow-write generate.ts"
+    "build": "deno run --unstable --allow-read --allow-write generate.ts",
+    "serve": "npx http-server ./dist -p 8000 --cors -c-1"
   }
 }
