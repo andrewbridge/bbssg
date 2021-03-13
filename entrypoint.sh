@@ -1,6 +1,9 @@
 #! /bin/sh
 set -e
 
+export DENO_INSTALL="/root/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
 timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 npm run build
