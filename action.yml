@@ -1,23 +1,10 @@
 name: 'Publish BBSSG site to GitHub pages'
 description: 'Publishes a BBSSG site to a gh-pages branch of your repo.'
 author: 'Andrew Bridge'
+inputs:
+  github_token:
+    description: 'Token for the repo. Can be passed in using $\{{ secrets.GITHUB_TOKEN }}'
+    required: true
 runs:
-  using: composite
-  steps:
-    - uses: actions/checkout@v2
-    - uses: denolib/setup-deno@v2
-      with:
-        deno-version: v1.x
-    - run: |
-        npm run build
-        git checkout --orphan gh-pages
-        git reset
-        git clean -fd
-        mv ./dist/* .
-        rm -d ./dist
-    - name: Commit & Push changes
-      uses: actions-js/push@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages
-        force: true
+  using: 'docker'
+  image: 'Dockerfile'
