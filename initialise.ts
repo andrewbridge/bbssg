@@ -25,7 +25,8 @@ export default async ({ gitignore = false, packageJson = false }: InitialiseOpti
         if (typeof packageObj.scripts !== 'object') {
             packageObj.scripts = {};
         }
-        packageObj.scripts.build = "deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.0.0/cli.ts generate";
+        const version = JSON.parse(files['./package.json']).version;
+        packageObj.scripts.build = `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v${version}/cli.ts generate`;
         await Deno.writeFile(packagePath, encoder.encode(JSON.stringify(packageObj, null, 2)));
     }
 };
