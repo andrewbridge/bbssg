@@ -10,7 +10,7 @@ const outputRelDir = './dist';
 const titleReplacementStr = '{%PAGE_TITLE%}';
 const contentReplacementStr = '{%PAGE_CONTENT%}';
 
-export default async () => {
+export default async (base = '') => {
     await ensureDir(inputRelDir);
     await ensureDir(outputRelDir);
     const inputDir = await Deno.realPath(inputRelDir);
@@ -40,7 +40,22 @@ export default async () => {
                     if (node instanceof Element) {
                         node.classList.add('active');
                     }
-                })
+                });
+                const isRelative = `^="/"`;
+                // Seems to be a bug where if no attribute has a `src` it fails selection
+                const relativeLinks = htmlDom.querySelectorAll(htmlDom.querySelector('[src]') ? `[href${isRelative}], [src${isRelative}]` : `[href${isRelative}]`);
+                relativeLinks.forEach(node => {
+                    if (node instanceof Element) {
+                        const href = node.getAttribute('href')
+                        if (href !== null && href.startsWith('/')) {
+                            node.setAttribute('href', base + href);
+                        }
+                        const src = node.getAttribute('src');
+                        if (src !== null && src.startsWith('/')) {
+                            node.setAttribute('src', base + src);
+                        }
+                    }
+                });
                 const title = htmlDom.querySelector('head title');
                 if (title) {
                     title.textContent = title.textContent.replace(titleReplacementStr, isHome ? 'Home' : pageTitle);

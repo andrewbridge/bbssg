@@ -24,6 +24,7 @@ program
 
 program
     .command("generate", "Generate bbssg site")
-    .action(generate);
+    .option("-b --base", "Set a base path for the generated site")
+    .action(() => generate(program.base));
 
 program.parse(Deno.args);
