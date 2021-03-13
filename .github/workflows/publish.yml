@@ -28,5 +28,5 @@ jobs:
     environment: production
     steps:
     - name: Publish BBSSG site to GitHub pages
-      uses: andrewbridge/bbssg@v1.1.5
+      uses: andrewbridge/bbssg@v1.1.6
 
