@@ -18,10 +18,12 @@ program
     .option("-g --gitignore", "Set up .gitignore")
     .option("-p --package", "Set up package.json")
     .option("-w --workflow", "Setup GitHub publishing workflow")
+    .option("-n --nosrc", "Don't initialise static site source files")
     .action(() => initialise({
         gitignore: program.gitignore,
         packageJson: program.package,
         githubWorkflow: program.workflow,
+        sourceFiles: !program.nosrc
     }));
 
 program

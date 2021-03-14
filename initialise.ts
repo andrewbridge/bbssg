@@ -4,13 +4,25 @@ import files from "./files.ts";
 const encoder = new TextEncoder();
 const decoder = new TextDecoder("utf-8");
 
-type InitialiseOptions = { gitignore: boolean, packageJson: boolean, githubWorkflow: boolean };
-export default async ({ gitignore = false, packageJson = false, githubWorkflow = false }: InitialiseOptions) => {
-    for (const path in files) {
-        if (!path.startsWith('./src')) continue;
-        await ensureFile(path);
-        const fileData = files[path as keyof typeof files];
-        await Deno.writeFile(path, encoder.encode(fileData));
+type InitialiseOptions = {
+    gitignore: boolean,
+    packageJson: boolean,
+    githubWorkflow: boolean,
+    sourceFiles: boolean,
+};
+export default async ({
+    gitignore = false,
+    packageJson = false,
+    githubWorkflow = false,
+    sourceFiles = true,
+}: InitialiseOptions) => {
+    if (sourceFiles === true) {
+        for (const path in files) {
+            if (!path.startsWith('./src')) continue;
+            await ensureFile(path);
+            const fileData = files[path as keyof typeof files];
+            await Deno.writeFile(path, encoder.encode(fileData));
+        }
     }
     if (gitignore === true) {
         const gitignorePath = './.gitignore';
