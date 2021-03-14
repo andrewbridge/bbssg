@@ -8,15 +8,19 @@ const decoder = new TextDecoder("utf-8");
 const __filename = fromFileUrl(import.meta.url);
 const __dirname = dirname(__filename);
 
+const getFileContents = async (path: string) => decoder.decode(await Deno.readFile(path));
+
 (async () => {
     type FlatFiles = { [key: string]: string };
     const files: FlatFiles = {};
     for await (const item of walk(join(__dirname, './src'))) {
         if (!item.isFile) continue;
         const relPath = item.path.replace(__dirname, '.');
-        files[relPath] = decoder.decode(await Deno.readFile(item.path));
+        files[relPath] = await getFileContents(item.path);
     }
-    files['./package.json'] = decoder.decode(Deno.readFileSync(join(__dirname, "./package.json")));
+    const githubWorkflowPath = './.github/workflows/publish.yml';
+    files[githubWorkflowPath] = await getFileContents(join(__dirname, githubWorkflowPath));
+    files['./package.json'] = await getFileContents(join(__dirname, "./package.json"));
     const fileModule = `export default ${JSON.stringify(files)}`;
     await Deno.writeFile('./files.ts', encoder.encode(fileModule));
 })();

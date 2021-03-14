@@ -4,8 +4,8 @@ import files from "./files.ts";
 const encoder = new TextEncoder();
 const decoder = new TextDecoder("utf-8");
 
-type InitialiseOptions = { gitignore: boolean, packageJson: boolean};
-export default async ({ gitignore = false, packageJson = false }: InitialiseOptions) => {
+type InitialiseOptions = { gitignore: boolean, packageJson: boolean, githubWorkflow: boolean };
+export default async ({ gitignore = false, packageJson = false, githubWorkflow = false }: InitialiseOptions) => {
     for (const path in files) {
         if (!path.startsWith('./src')) continue;
         await ensureFile(path);
@@ -25,8 +25,13 @@ export default async ({ gitignore = false, packageJson = false }: InitialiseOpti
         if (typeof packageObj.scripts !== 'object') {
             packageObj.scripts = {};
         }
-        const version = JSON.parse(files['./package.json']).version;
+        const version = JSON.parse(files[packagePath]).version;
         packageObj.scripts.build = `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v${version}/cli.ts generate`;
         await Deno.writeFile(packagePath, encoder.encode(JSON.stringify(packageObj, null, 2)));
+    }
+    if (githubWorkflow === true) {
+        const workflowPath = './.github/workflows/publish.yml';
+        await ensureFile(workflowPath);
+        await Deno.writeFile(workflowPath, encoder.encode(files[workflowPath as keyof typeof files]));
     }
 };

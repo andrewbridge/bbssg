@@ -17,9 +17,11 @@ program
     .command("initialise", "Initialise bbssg site")
     .option("-g --gitignore", "Set up .gitignore")
     .option("-p --package", "Set up package.json")
+    .option("-w --workflow", "Setup GitHub publishing workflow")
     .action(() => initialise({
         gitignore: program.gitignore,
         packageJson: program.package,
+        githubWorkflow: program.workflow,
     }));
 
 program
