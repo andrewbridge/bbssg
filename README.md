@@ -27,17 +27,17 @@ Note the `--gitignore`, `--package` and `--workflow`:
 ### Manual
 
 - Create `./src/template.html`
-    - You can copy the contents of [`index.html`](./blob/main/src/template.html) or...
+    - You can copy the contents of [`index.html`](./src/template.html) or...
     - Check the [Customising the template](#customising-the-template) section to put together your own template
 - Create `./src/content/index.md`
 - The `yarn build` or `npm run build` commands mentioned below are aliases of
     - `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.12/cli.ts generate`
 - The site is generated in a `./dist` directory, so optionally add `/dist` to `.gitignore`
-- The [`publish.yml`](./blob/main/.github/workflows/publish.yml) can be copied in place into your site repo
+- The [`publish.yml`](./.github/workflows/publish.yml) can be copied in place into your site repo
 
 ### Customise
 
-If any of the functionality or behaviour described below doesn't suit your needs, but you still want to use BBSSG, grab [`generate.ts`](./blob/main/generate.ts) from this repo (or clone the whole thing) and tweak as necessary. You can then run it
+If any of the functionality or behaviour described below doesn't suit your needs, but you still want to use BBSSG, grab [`generate.ts`](./generate.ts) from this repo (or clone the whole thing) and tweak as necessary. You can then run it
 
 ## Usage
 
@@ -71,7 +71,7 @@ The default template is set up to use [Water.css](https://watercss.kognise.dev/)
 
 #### Serving from a non-root location
 
-If your site is hosted from a non-root location (such as [andrewbridge.github.io/bbssg/](https://andrewbridge.github.io/bbssg/)), you can use the `--base` flag like `yarn build --base /bbssg` or `npm run build --base /bbssg`. You can also add this into your build command. Check the build command for this repository in [`package.json`](./blob/main/package.json) for an example.
+If your site is hosted from a non-root location (such as [andrewbridge.github.io/bbssg/](https://andrewbridge.github.io/bbssg/)), you can use the `--base` flag like `yarn build --base /bbssg` or `npm run build --base /bbssg`. You can also add this into your build command. Check the build command for this repository in [`package.json`](./package.json) for an example.
 
 ### Customising the template
 
