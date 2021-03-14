@@ -10,11 +10,15 @@ It's built in [deno](https://deno.land/) so you don't need another `node_modules
 
 ## Install
 
-Initialise a site with `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.11/cli.ts initialise --gitignore --package --workflow`.
+Initialise a site with:
 
-Yes, that `--unstable` looks scary, but unfortuately a majority of the [deno fs module](https://deno.land/std@0.89.0/fs) currently requires it.
+```sh
+deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.11/cli.ts initialise --gitignore --package --workflow
+```
 
-Note the `--gitignore` and `--package`:
+Yes, that `--unstable` looks scary, unfortunately, a majority of the [deno fs module](https://deno.land/std@0.89.0/fs) currently requires it.
+
+Note the `--gitignore`, `--package` and `--workflow`:
 
 - `--gitignore` adds the `./dist` directory to your `.gitignore` file
 - `--package` adds the `build` script to generate a BBSSG site
