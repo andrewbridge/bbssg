@@ -6,6 +6,8 @@ BBSSG takes markdown content (no frontmatter here!) places it into an HTML templ
 
 It's built in [deno](https://deno.land/) so you don't need another `node_modules` folder filling up your hard drive and only adds ~100 lines of my shonky code to tie libraries together (written by much smarter, less shonky people).
 
+[Live static site](https://andrewbridge.github.io/bbssg/)
+
 ## Install
 
 Initialise a site with `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.11/cli.ts initialise --gitignore --package --workflow`.
@@ -28,16 +30,6 @@ Note the `--gitignore` and `--package`:
     - `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.11/cli.ts generate`
 - The site is generated in a `./dist` directory, so optionally add `/dist` to `.gitignore`
 - The [`publish.yml`](./blob/main/.github/workflows/publish.yml) can be copied in place into your site repo
-
-### Publish site GitHub action
-
-Install the github workflow using the `initialise --workflow` parameter as described in the [Install](#install) section.
-
-The workflow publishes the generated site to the `gh-pages` branch of your repo. To point GitHub Pages at your site, select `gh-pages` as your GitHub Pages branch in your repository settings.
-
-![GitHub pages settings screenshot](./github-pages-settings-screenshot.png)
-
-Check the [Publishing](#publishing) section for more information on publishing via a GitHub workflow.
 
 ### Customise
 
@@ -73,6 +65,10 @@ The default template is set up to use [Water.css](https://watercss.kognise.dev/)
         index.html
 ```
 
+#### Serving from a non-root location
+
+If your site is hosted from a non-root location (such as [andrewbridge.github.io/bbssg/](https://andrewbridge.github.io/bbssg/)), you can use the `--base` flag like `yarn build --base /bbssg` or `npm run build --base /bbssg`. You can also add this into your build command. Check the build command for this repository in [`package.json`](./blob/main/package.json) for an example.
+
 ### Customising the template
 
 The template, `src/template.html`, is the only other required file. Any global elements, such as a navbar, should go here. There's no automated generated of the navbar, it's all manual, but that provides you simple and complete control for the small price of this manual work.
@@ -91,8 +87,13 @@ Any link on the generated page that matches the URL of the page being generated 
 
 ## Publishing
 
-// TODO:
-Write some stuff here about a github action, implement the github action as a demo
+Install the github workflow using the `initialise --workflow` parameter as described in the [Install](#install) section.
+
+The workflow publishes the generated site to the `gh-pages` branch of your repo. To point GitHub Pages at your site, select `gh-pages` as your GitHub Pages branch in your repository settings.
+
+![GitHub pages settings screenshot](./github-pages-settings-screenshot.png)
+
+This repository has the workflow running on any push to the `main` branch. The example site is served at [andrewbridge.github.io/bbssg](https://andrewbridge.github.io/bbssg/)
 
 ## Development
 
@@ -101,3 +102,9 @@ As this is a barebones generator, the development situation is pretty barebones 
 If you need to serve the site, `yarn serve` or `npm run serve` will run a simple HTTP server of the `dist` directory at [http://localhost:8000](http://localhost:8000).
 
 There's no live reloading or hot reloading here, so be ready to hit that refresh button!
+
+### Deployment
+
+We rely on access to files from this repository during initialisation. Because of the remote nature of deno modules, we need to flatten files into a JS module in order to do so. When a non-js file has changed, run `yarn updateTemplate` to update the file module used during initialisation.
+
+We host BBSSG from [deno.land](https://deno.land/x/bbssg@v1.1.11), which needs a new tag in the repository in order to update the package. For the same reason, each time we need to push to deno.land, we need to bump the version number used in this `README.md` and in `package.json` in order to keep everything aligned.
