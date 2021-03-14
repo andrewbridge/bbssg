@@ -8,7 +8,7 @@ It's built in [deno](https://deno.land/) so you don't need another `node_modules
 
 ## Install
 
-Initialise a site with `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.9/cli.ts initialise --gitignore --package`.
+Initialise a site with `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.10/cli.ts initialise --gitignore --package`.
 
 Yes, that `--unstable` looks scary, but unfortuately a majority of the [deno fs module](https://deno.land/std@0.89.0/fs) currently requires it.
 
@@ -24,7 +24,7 @@ Note the `--gitignore` and `--package`:
     - Check the [Customising the template](#customising-the-template) section for
 - Create `./src/content/index.md`
 - The `yarn build` or `npm run build` commands mentioned below are aliases of
-    - `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.9/cli.ts generate`
+    - `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.10/cli.ts generate`
 - The site is generated in a `./dist` directory, so optionally add `/dist` to `.gitignore`
 
 ### Publish site GitHub action
