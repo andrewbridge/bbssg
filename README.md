@@ -28,7 +28,7 @@ Note the `--gitignore`, `--package` and `--workflow`:
 
 - Create `./src/template.html`
     - You can copy the contents of [`index.html`](./blob/main/src/template.html) or...
-    - Check the [Customising the template](#customising-the-template) section for
+    - Check the [Customising the template](#customising-the-template) section to put together your own template
 - Create `./src/content/index.md`
 - The `yarn build` or `npm run build` commands mentioned below are aliases of
     - `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.1.11/cli.ts generate`
