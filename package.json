@@ -1,6 +1,6 @@
 {
   "name": "bbssg",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A barebones static site generator",
   "main": "generate.ts",
   "author": "Andrew Bridge <andrew@andrewhbridge.co.uk>",
