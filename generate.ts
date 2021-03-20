@@ -41,20 +41,18 @@ export default async (base = '') => {
                         node.classList.add('active');
                     }
                 });
-                const isRelative = `^="/"`;
-                // Seems to be a bug where if no attribute has a `src` it fails selection
-                const relativeLinks = htmlDom.querySelectorAll(htmlDom.querySelector('[src]') ? `[href${isRelative}], [src${isRelative}]` : `[href${isRelative}]`);
-                relativeLinks.forEach(node => {
-                    if (node instanceof Element) {
-                        const href = node.getAttribute('href')
-                        if (href !== null && href.startsWith('/')) {
-                            node.setAttribute('href', base + href);
+                // Seems to be a bug where multi-css selectors don't work
+                ['href', 'src'].forEach(attr => {
+                    const relativeLinks = htmlDom.querySelectorAll(`[${attr}^="/"]`);
+                    if (!relativeLinks) return;
+                    relativeLinks.forEach(node => {
+                        if (node instanceof Element) {
+                            const attrValue = node.getAttribute(attr)
+                            if (attrValue !== null && attrValue.startsWith('/')) {
+                                node.setAttribute(attr, base + attrValue);
+                            }
                         }
-                        const src = node.getAttribute('src');
-                        if (src !== null && src.startsWith('/')) {
-                            node.setAttribute('src', base + src);
-                        }
-                    }
+                    });
                 });
                 const title = htmlDom.querySelector('head title');
                 if (title) {
