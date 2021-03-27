@@ -10,6 +10,11 @@ const outputRelDir = './dist';
 const titleReplacementStr = '{%PAGE_TITLE%}';
 const contentReplacementStr = '{%PAGE_CONTENT%}';
 
+const isHome = (filename: string) => filename === 'index.md';
+const getPrettyUrl = (filename: string) => isHome(filename)
+                        ? filename.replace('.md', '.html')
+                        : filename.replace('.md', '/index.html');
+
 export default async (base = '') => {
     await ensureDir(inputRelDir);
     await ensureDir(outputRelDir);
@@ -22,9 +27,8 @@ export default async (base = '') => {
         const { path, name } = item;
         const ext = extname(name);
         if (ext === '.md') {
-            const isHome = name === 'index.md';
             const md = await Deno.readTextFile(join(inputDir, './content', name));
-            const htmlFileName = isHome ? name.replace(ext, '.html') : name.replace(ext, '/index.html');
+            const htmlFileName = getPrettyUrl(name);
             const htmlPath = join(outputDir, htmlFileName);
             const html = marked(md).replace(/\n/g, '\n        ');
             let templatedHtml = template.replace(contentReplacementStr, html);
@@ -43,20 +47,37 @@ export default async (base = '') => {
                 });
                 // Seems to be a bug where multi-css selectors don't work
                 ['href', 'src'].forEach(attr => {
-                    const relativeLinks = htmlDom.querySelectorAll(`[${attr}^="/"]`);
-                    if (!relativeLinks) return;
-                    relativeLinks.forEach(node => {
-                        if (node instanceof Element) {
-                            const attrValue = node.getAttribute(attr)
-                            if (attrValue !== null && attrValue.startsWith('/')) {
-                                node.setAttribute(attr, base + attrValue);
+                    const internalLinks = htmlDom.querySelectorAll(`[${attr}^="./"]`);
+                    if (internalLinks) {
+                        internalLinks.forEach(node => {
+                            if (node instanceof Element) {
+                                const attrValue = node.getAttribute(attr);
+                                if (attrValue !== null && attrValue.startsWith('./')) {
+                                    const url = new URL(`https://example.com/${attrValue}`);
+                                    const prettyUrl = getPrettyUrl(url.pathname) + url.hash;
+                                    node.setAttribute(attr, prettyUrl);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+
+                    const relativeLinks = htmlDom.querySelectorAll(`[${attr}^="/"]`);
+                    if (relativeLinks) {
+                        relativeLinks.forEach(node => {
+                            if (node instanceof Element) {
+                                const attrValue = node.getAttribute(attr);
+                                if (attrValue !== null && attrValue.startsWith('/')) {
+                                    node.setAttribute(attr, base + attrValue);
+                                }
+                            }
+                        });
+                    }
+
+
                 });
                 const title = htmlDom.querySelector('head title');
                 if (title) {
-                    title.textContent = title.textContent.replace(titleReplacementStr, isHome ? 'Home' : pageTitle);
+                    title.textContent = title.textContent.replace(titleReplacementStr, isHome(name) ? 'Home' : pageTitle);
                 }
                 if (htmlDom.documentElement) {
                     templatedHtml = templatedHtml.slice(0, templatedHtml.indexOf('<html')) + htmlDom.documentElement.outerHTML;

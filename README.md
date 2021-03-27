@@ -13,7 +13,7 @@ It's built in [deno](https://deno.land/) so you don't need another `node_modules
 Initialise a site with:
 
 ```sh
-deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.2.1/cli.ts initialise --gitignore --package --workflow
+deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.3.0/cli.ts initialise --gitignore --package --workflow
 ```
 
 Yes, that `--unstable` looks scary, unfortunately, a majority of the [deno fs module](https://deno.land/std@0.89.0/fs) currently requires it.
@@ -33,7 +33,7 @@ Additionally, if you **don't** want to initialise the source files, you can pass
     - Check the [Customising the template](#customising-the-template) section to put together your own template
 - Create `./src/content/index.md`
 - The `yarn build` or `npm run build` commands mentioned below are aliases of
-    - `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.2.1/cli.ts generate`
+    - `deno run --unstable --allow-read --allow-write https://deno.land/x/bbssg@v1.3.0/cli.ts generate`
 - The site is generated in a `./dist` directory, so optionally add `/dist` to `.gitignore`
 - The [`publish.yml`](./.github/workflows/publish.yml) can be copied in place into your site repo
 
@@ -113,4 +113,4 @@ There's no live reloading or hot reloading here, so be ready to hit that refresh
 
 We rely on access to files from this repository during initialisation. Because of the remote nature of deno modules, we need to flatten files into a JS module in order to do so. When a non-js file has changed, run `yarn updateTemplate` to update the file module used during initialisation.
 
-We host BBSSG from [deno.land](https://deno.land/x/bbssg@v1.2.1), which needs a new tag in the repository in order to update the package. For the same reason, each time we need to push to deno.land, we need to bump the version number used in this `README.md` and in `package.json` in order to keep everything aligned.
+We host BBSSG from [deno.land](https://deno.land/x/bbssg@v1.3.0), which needs a new tag in the repository in order to update the package. For the same reason, each time we need to push to deno.land, we need to bump the version number used in this `README.md` and in `package.json` in order to keep everything aligned.
